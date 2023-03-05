@@ -19,7 +19,7 @@ function CheckHelpFlag {
 function ShowHelpAndExit {
     local exitCode=$(expr "$1" \| 0)
 
-    echo "Usage: bash \"$EXEC\" <manpage> [out_file.pdf]" >&2
+    echo "Usage: bash \"$EXEC\" <manpage> [/path/to/out_file.pdf]" >&2
     echo "" >&2
     echo "The <manpage> argument takes one of these forms:"
     echo "1. \`<manpage_name>.<section>\`" >&2

@@ -23,11 +23,13 @@ The repository's [`Makefile`](./Makefile) also provides you convenient operation
 ### Usage
 
 ```bash
-man2pdf <man_page_name> [out_file.pdf]
+man2pdf <man_page_name> [/path/to/out_file.pdf]
 ```
 
 * The `<man_page_name>` is the name of the manpage. It takes one of these forms:
     1. `<manpage_name>.<section>`
     2. `<manpage_name>(<section>)`
     3. `<manpage_name>` _(The section is resolved automatically)_
-* The `[out_file.pdf]` argument is optional. If omitted, it will be resolved to the format `<manpage_name>(<section>).pdf`, and saved under the _current working directory_.
+* The `[/path/to/out_file.pdf]` argument is optional.
+    * If omitted, it will be resolved to the format `<manpage_name>(<section>).pdf`, and saved under the _current working directory_.
+    * If it is specified as an existing directory, the filename will also be resolved to the format `<manpage_name>(<section>).pdf`, and saved under that directory.
