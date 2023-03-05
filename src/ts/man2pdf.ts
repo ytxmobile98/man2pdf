@@ -8,7 +8,12 @@ const MAN2PDF_EXEC = path.resolve(
 );
 
 export function man2pdf(manpage: string, outPath: string = ''): SpawnSyncReturns<Buffer> {
-    const ret = spawnSync(MAN2PDF_EXEC, [ manpage, outPath ], {
+    const args: string[] = [ manpage ];
+    if (outPath) {
+        args.push(outPath);
+    }
+
+    const ret = spawnSync(MAN2PDF_EXEC, args, {
         stdio: 'inherit'
     });
     return ret;
