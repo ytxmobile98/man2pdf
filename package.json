@@ -2,11 +2,14 @@
   "name": "man2pdf",
   "version": "1.0.0",
   "description": "Convert manpages to PDF",
-  "main": "dist/index.js",
+  "main": "dist/js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:bash; npm run build:js",
+    "build:bash": "mkdir -p dist/bash && cp -r src/bash/* dist/bash",
+    "build:js": "mkdir -p dist/js && tsc -p src/ts",
+    "clean": "rm -rf dist"
   },
-  "bin": "src/bash/man2pdf.sh",
+  "bin": "dist/bash/man2pdf.sh",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ytxmobile98/man2pdf.git"

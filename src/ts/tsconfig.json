@@ -1,8 +1,7 @@
 {
     "extends": "@tsconfig/node10",
     "compilerOptions": {
-        "outDir": "../../dist",
+        "outDir": "../../dist/js",
         "declaration": true,
-        "declarationDir": "../../dist"
     }
 }
