@@ -1,16 +1,36 @@
 #!/bin/bash
 
-CURDIR="$(dirname "$(realpath "$0")")"
+EXEC="$0"
+CURDIR="$(dirname "$(realpath "$EXEC")")"
 
 FIND_MAN_SECTION_EXEC="$CURDIR/find_man_section.sh"
 
+function CheckHelpFlag {
+    for arg in $@
+    do
+        if [ "$arg" = "-h" ] || [ "$arg" = "--help" ]
+        then
+            ShowHelpAndExit
+            break
+        fi
+    done
+}
+
+function ShowHelpAndExit {
+    local exitCode=$(expr "$1" \| 0)
+
+    echo "Usage: bash \"$EXEC\" <man_page_name> [out_file.pdf]" >&2
+
+    exit $exitCode
+}
+
 # Check input arguments
+CheckHelpFlag $@
 manpage="$1"
 outPath="$2"
 if [ -z "$manpage" ]
 then
-    echo "Usage: bash \"$0\" <man_page_name> [out_file.pdf]" >&2
-    exit 1
+    ShowHelpAndExit 1
 fi
 # Note: The outPath is optional. If it is not given, it will be resolved automatically according to the manpage name.
 
