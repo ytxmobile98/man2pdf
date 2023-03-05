@@ -19,3 +19,15 @@ The repository's [`Makefile`](./Makefile) also provides you convenient operation
 * **`sudo make install` / `sudo make uninstall`: Install the `man2pdf` script _for all users_.**
     * The `man2pdf` script will be placed in the **`/usr/local/bin`** directory.
     * Auxiliary scripts will be placed in the `/usr/local/share/man2pdf` directory.
+
+### Usage
+
+```bash
+man2pdf <man_page_name> [out_file.pdf]
+```
+
+* The `<man_page_name>` is the name of the manpage. It takes one of these forms:
+    1. `<manpage_name>.<section>`
+    2. `<manpage_name>(<section>)`
+    3. `<manpage_name>` _(The section is resolved automatically)_
+* The `[out_file.pdf]` argument is optional. If omitted, it will be resolved to the format `<manpage_name>(<section>).pdf`, and saved under the _current working directory_.
