@@ -1,5 +1,9 @@
 #!/bin/bash
 
+CURDIR="$(dirname "$(realpath "$0")")"
+
+FIND_MAN_SECTION_EXEC="$CURDIR/find_man_section.sh"
+
 # Check input arguments
 manpage="$1"
 outPath="$2"
@@ -22,12 +26,14 @@ function HandleConvert {
     local manpage="$1"
     local outPath="$2"
 
-    # Ensure that the manpage actually exists
-    if ! man -w "$manpage" > /dev/null
+    # Find exact manpage with section number.
+    # If failed, return 1.
+    manpage=$("$FIND_MAN_SECTION_EXEC" "$manpage")
+    if [ $? -ne 0 ]
     then
-        # manpage file does not exist
         return 1
     fi
+    echo "The manpage to process is: $manpage"
 
     # Set output file path
     local outFile="$outPath"
