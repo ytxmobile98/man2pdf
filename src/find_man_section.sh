@@ -1,20 +1,25 @@
 #!/bin/bash
 
-if [ -z "$1" ]
+# Check arguments
+if [ -n "$1" ] && [ -n "$2" ]
 then
+    manpage="$2($1)" # name(section), e.g. ls(1)
+elif [ -n "$1" ]
+then
+    manpage="$1"
+else
     echo "Usage: bash \"$0\" <manpage>" >&2
     echo "" >&2
     echo "<manpage> takes one of the following formats:" >&2
-    echo "1. \`<manpage_name>.<section>\`" >&2
-    echo "2. \`<manpage_name>(<section>)\`" >&2
-    echo "3. \`<manpage_name>\` (The section is resolved automatically)"
+    echo "1. \`<section> <manpage_name>\`" >&2
+    echo "2. \`<manpage_name>.<section>\`" >&2
+    echo "3. \`<manpage_name>(<section>)\`" >&2
+    echo "4. \`<manpage_name>\` (The section is resolved automatically)" >&2
     echo "" >&2
     echo "The output will have this format: \`<manpage_name>(<section>)\`" >&2
 
     exit 1
 fi
-
-manpage="$1"
 
 function FindManpage {
     local manpage="$1"
