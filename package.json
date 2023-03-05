@@ -1,0 +1,24 @@
+{
+  "name": "man2pdf",
+  "version": "1.0.0",
+  "description": "Convert manpages to PDF",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ytxmobile98/man2pdf.git"
+  },
+  "keywords": [
+    "PDF",
+    "man",
+    "man2pdf"
+  ],
+  "author": "ytxmobile98",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ytxmobile98/man2pdf/issues"
+  },
+  "homepage": "https://github.com/ytxmobile98/man2pdf#readme"
+}
