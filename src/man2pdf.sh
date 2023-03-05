@@ -1,10 +1,10 @@
 #!/bin/bash
 
-manpageName="$1"
+manpage="$1"
 outPath="$2"
 
 # Check input arguments
-if [ -z "$manpageName" ]
+if [ -z "$manpage" ]
 then
     echo "Usage: bash \"$0\" <man_page_name> [out_file.pdf]" >&2
     exit 1
@@ -19,11 +19,11 @@ fi
 
 # Handle convert
 function HandleConvert {
-    local manpageName="$1"
+    local manpage="$1"
     local outPath="$2"
 
     # Ensure that the manpage actually exists
-    if ! man -w "$manpageName" > /dev/null
+    if ! man -w "$manpage" > /dev/null
     then
         # manpage file does not exist
         return 1
@@ -34,18 +34,18 @@ function HandleConvert {
     # Case 1: If output path is not specified, then use manpage name as output filename.
     if [ -z "$outFile" ]
     then
-        outFile="$manpageName.pdf"
+        outFile="$manpage.pdf"
     # Case 2: If output path is a directory, then use manpage name as output filename under output directory.
     elif [ -d "$outPath" ]
     then
-        outFile="$outPath/$manpageName.pdf"
+        outFile="$outPath/$manpage.pdf"
     # Case 3 (default): set output path as output file
     else
         :
     fi
 
     # Convert to PDF (will return non-zero if conversion fails)
-    man -t "$manpageName" | ps2pdf - "$outFile"
+    man -t "$manpage" | ps2pdf - "$outFile" && echo "Saved output to \"$(realpath "$outFile")\"."
 }
 
-HandleConvert "$manpageName" "$outPath"
+HandleConvert "$manpage" "$outPath"
