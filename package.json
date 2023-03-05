@@ -2,6 +2,10 @@
   "name": "man2pdf",
   "version": "1.0.0",
   "description": "Convert manpages to PDF",
+  "os": [
+    "darwin",
+    "linux"
+  ],
   "main": "dist/js/index.js",
   "scripts": {
     "build": "npm run build:bash; npm run build:js",
