@@ -5,43 +5,34 @@ import { join } from "node:path";
 import man2pdf from '../src/ts';
 
 describe('man2pdf tests', () => {
-    const CWD = process.cwd();
-
     it('nonexistent manpage', () => {
         const spawnResult = man2pdf('.');
         assert.ok(spawnResult.status !== 0, spawnResult.error?.message);
     });
 
-    it('manpage_name, no section', () => {
-        const EXPECTED_FILENAME = 'ls(1).pdf';
-        const EXPECTED_FILE_PATH = join(CWD, EXPECTED_FILENAME);
+    describe('generate .pdf files in current working directory', () => {
+        const CWD = process.cwd();
 
-        const spawnResult = man2pdf('ls');
-        assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+        function runTest(manpage: string, expectedFilename: string) {
+            const expectedFilePath = join(CWD, expectedFilename);
 
-        assert.ok(existsSync(EXPECTED_FILE_PATH));
-        rmSync(EXPECTED_FILE_PATH);
-    });
+            const spawnResult = man2pdf(manpage);
+            assert.ok(spawnResult.status === 0, spawnResult.error?.message);
 
-    it('manpage_name.section', () => {
-        const EXPECTED_FILENAME = 'ls(1).pdf';
-        const EXPECTED_FILE_PATH = join(CWD, EXPECTED_FILENAME);
+            assert.ok(existsSync(expectedFilePath));
+            rmSync(expectedFilePath);
+        }
 
-        const spawnResult = man2pdf('ls.1');
-        assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+        it('manpage_name, no section', () => {
+            runTest('ls', 'ls(1).pdf');
+        });
 
-        assert.ok(existsSync(EXPECTED_FILE_PATH));
-        rmSync(EXPECTED_FILE_PATH);
-    });
+        it('manpage_name.section', () => {
+            runTest('ls.1', 'ls(1).pdf');
+        });
 
-    it('manpage_name(section)', () => {
-        const EXPECTED_FILENAME = 'ls(1).pdf';
-        const EXPECTED_FILE_PATH = join(CWD, EXPECTED_FILENAME);
-
-        const spawnResult = man2pdf('ls(1)');
-        assert.ok(spawnResult.status === 0, spawnResult.error?.message);
-
-        assert.ok(existsSync(EXPECTED_FILE_PATH));
-        rmSync(EXPECTED_FILE_PATH);
+        it('manpage_name(section)', () => {
+            runTest('ls(1)', 'ls(1).pdf');
+        });
     });
 });
