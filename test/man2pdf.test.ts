@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { chmodSync, closeSync, existsSync, mkdtempSync, openSync, rmSync } from 'node:fs';
+import { chmodSync, closeSync, existsSync, mkdtempSync, openSync, rmSync, statSync } from 'node:fs';
 import { join } from "node:path";
 
 import man2pdf from '../src/ts';
@@ -123,11 +123,16 @@ describe('man2pdf tests', () => {
 
         function runTest(manpage: string) {
             assert.ok(existsSync(expectedFilePath));
+            const statBefore = statSync(expectedFilePath);
 
             const spawnResult = man2pdf(manpage, expectedFilePath);
             assert.ok(spawnResult.status !== 0, spawnResult.error?.message);
 
             assert.ok(existsSync(expectedFilePath));
+            const statAfter = statSync(expectedFilePath);
+
+            assert.deepStrictEqual(statBefore, statAfter,
+                `The file "${expectedFilePath}" should be read-only and not modified.`);
         }
 
         beforeEach(() => {
