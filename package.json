@@ -10,7 +10,8 @@
     "build": "npm run build:bash; npm run build:js",
     "build:bash": "mkdir -p dist/bash && cp -r src/bash/* dist/bash",
     "build:js": "mkdir -p dist/js && tsc -p src/ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "cd test && ts-mocha **/*.test.ts"
   },
   "files": [
     "dist",
