@@ -39,14 +39,6 @@ describe('man2pdf tests', () => {
     describe('generate .pdf files in temporary directory', () => {
         let tempDir: string = '';
 
-        beforeEach(() => {
-            tempDir = mkdtempSync('/tmp/');
-        });
-
-        afterEach(() => {
-            rmSync(tempDir, { recursive: true });
-        });
-
         function runTest(manpage: string, expectedFilename: string) {
             const expectedFilePath = join(tempDir, expectedFilename);
 
@@ -56,6 +48,14 @@ describe('man2pdf tests', () => {
             assert.ok(existsSync(expectedFilePath));
             rmSync(expectedFilePath);
         }
+
+        beforeEach(() => {
+            tempDir = mkdtempSync('/tmp/');
+        });
+
+        afterEach(() => {
+            rmSync(tempDir, { recursive: true });
+        });
 
         it('manpage_name, no section', () => {
             runTest('man', 'man(1).pdf');
@@ -75,17 +75,10 @@ describe('man2pdf tests', () => {
         const expectedFilename = 'man';
         let expectedFilePath: string = '';
 
-        beforeEach(() => {
-            tempDir = mkdtempSync('/tmp/');
-            expectedFilePath = join(tempDir, expectedFilename);
-
-            const fd = openSync(expectedFilePath, 'w');
+        function createFile(filePath: string) {
+            const fd = openSync(filePath, 'w');
             closeSync(fd);
-        });
-
-        afterEach(() => {
-            rmSync(tempDir, { recursive: true });
-        });
+        }
 
         function runTest(manpage: string) {
             const spawnResult = man2pdf(manpage, expectedFilePath);
@@ -93,6 +86,17 @@ describe('man2pdf tests', () => {
 
             assert.ok(existsSync(expectedFilePath));
         }
+
+        beforeEach(() => {
+            tempDir = mkdtempSync('/tmp/');
+            expectedFilePath = join(tempDir, expectedFilename);
+
+            createFile(expectedFilePath);
+        });
+
+        afterEach(() => {
+            rmSync(tempDir, { recursive: true });
+        });
 
         it('manpage_name, no section', () => {
             runTest('man');
