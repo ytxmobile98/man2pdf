@@ -54,7 +54,7 @@ function FindManpage {
         return 1
     fi
 
-    # convert to manpage_name(section) format
+    # Convert to manpage_name(section) format
     manpageFile="$(basename "$manpageFile" .gz)"
     local manpageName="${manpageFile%.*}"
     local section="${manpageFile##*.}"
