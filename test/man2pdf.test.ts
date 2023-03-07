@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { closeSync, existsSync, mkdtempSync, openSync, rmSync } from 'node:fs';
 import { join } from "node:path";
 
 import man2pdf from '../src/ts';
@@ -67,6 +67,43 @@ describe('man2pdf tests', () => {
 
         it('manpage_name(section)', () => {
             runTest('man(1)', 'man(1).pdf');
+        });
+    });
+
+    describe('generate .pdf files in temporary directory (overwrite target file)', () => {
+        let tempDir: string = '';
+        const expectedFilename = 'man';
+        let expectedFilePath: string = '';
+
+        beforeEach(() => {
+            tempDir = mkdtempSync('/tmp/');
+            expectedFilePath = join(tempDir, expectedFilename);
+
+            const fd = openSync(expectedFilePath, 'w');
+            closeSync(fd);
+        });
+
+        afterEach(() => {
+            rmSync(tempDir, { recursive: true });
+        });
+
+        function runTest(manpage: string) {
+            const spawnResult = man2pdf(manpage, expectedFilePath);
+            assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+
+            assert.ok(existsSync(expectedFilePath));
+        }
+
+        it('manpage_name, no section', () => {
+            runTest('man');
+        });
+
+        it('manpage_name.section', () => {
+            runTest('man.1');
+        });
+
+        it('manpage_name(section)', () => {
+            runTest('man(1)');
         });
     });
 });
