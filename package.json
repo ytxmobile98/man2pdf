@@ -11,6 +11,10 @@
     "build:bash": "mkdir -p dist/bash && cp -r src/bash/* dist/bash",
     "build:js": "mkdir -p dist/js && tsc -p src/ts",
     "clean": "rm -rf dist",
+    "examples": "( npm run example:cjs ); ( npm run example:esm ); ( npm run example:ts )",
+    "example:cjs": "cd examples && node man.js",
+    "example:esm": "cd examples && node man.mjs",
+    "example:ts": "cd examples && ts-node man.ts",
     "test": "cd test && ts-mocha **/*.test.ts"
   },
   "files": [
