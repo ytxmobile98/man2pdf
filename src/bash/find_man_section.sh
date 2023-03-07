@@ -55,11 +55,13 @@ function FindManpage {
     fi
 
     # Convert to manpage_name(section) format
-    manpageFile="$(basename "$manpageFile" .gz)"
-    local manpageName="${manpageFile%.*}"
-    local section="${manpageFile##*.}"
-
-    echo "$manpageName($section)"
+    local manpageFileBasename="$(basename "$manpageFile" .gz)" # may be gzipped
+    if ! [[ "$manpageFileBasename" =~ ^(.+)\.(.+)$ ]]
+    then
+        echo "[ERROR] Invalid manpage file \"$manpageFile\"." >&2
+        echo "The name should have the <manpage_name>.<section>[.gz] format, with an optional .gz suffix (for compressed manpages)." >&2
+    fi
+    echo "${BASH_REMATCH[1]}(${BASH_REMATCH[2]})"
 }
 
 FindManpage "$manpage"
