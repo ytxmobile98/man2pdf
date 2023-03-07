@@ -1,3 +1,6 @@
 {
     "extends": "@tsconfig/node10",
+    "include": [
+        "**/*.test.ts"
+    ]
 }
