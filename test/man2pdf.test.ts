@@ -24,15 +24,15 @@ describe('man2pdf tests', () => {
         }
 
         it('manpage_name, no section', () => {
-            runTest('ls', 'ls(1).pdf');
+            runTest('man', 'man(1).pdf');
         });
 
         it('manpage_name.section', () => {
-            runTest('ls.1', 'ls(1).pdf');
+            runTest('man.1', 'man(1).pdf');
         });
 
         it('manpage_name(section)', () => {
-            runTest('ls(1)', 'ls(1).pdf');
+            runTest('man(1)', 'man(1).pdf');
         });
     });
 
@@ -58,15 +58,15 @@ describe('man2pdf tests', () => {
         }
 
         it('manpage_name, no section', () => {
-            runTest('ls', 'ls(1).pdf');
+            runTest('man', 'man(1).pdf');
         });
 
         it('manpage_name.section', () => {
-            runTest('ls.1', 'ls(1).pdf');
+            runTest('man.1', 'man(1).pdf');
         });
 
         it('manpage_name(section)', () => {
-            runTest('ls(1)', 'ls(1).pdf');
+            runTest('man(1)', 'man(1).pdf');
         });
     });
 });
