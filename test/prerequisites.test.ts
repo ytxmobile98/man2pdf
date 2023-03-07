@@ -13,9 +13,7 @@ describe('Check prerequisites', () => {
 
     for (const prerequisite of prerequisites) {
         it(`"${prerequisite}" should exist`, () => {
-            console.log('here1');
             assert.ok(commandIsAvailable(prerequisite), `Command "${prerequisite}" does not exist`);
-            console.log('here2');
         });
     }
 });
