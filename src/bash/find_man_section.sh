@@ -61,7 +61,9 @@ function FindManpage {
         echo "[ERROR] Invalid manpage file \"$manpageFile\"." >&2
         echo "The name should have the <manpage_name>.<section>[.gz] format, with an optional .gz suffix (for compressed manpages)." >&2
     fi
-    echo "${BASH_REMATCH[1]}(${BASH_REMATCH[2]})"
+    local manpageName="${BASH_REMATCH[1]}"
+    local section="${BASH_REMATCH[2]}"
+    echo "$manpageName($section)"
 }
 
 FindManpage "$manpage"
