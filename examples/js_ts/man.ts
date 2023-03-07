@@ -1,9 +1,9 @@
 import { rmSync } from 'fs';
-import { dirname, resolve } from 'path';
+import { resolve } from 'path';
 
 import man2pdf from 'man2pdf';
 
-process.chdir(dirname(new URL(import.meta.url).pathname));
+process.chdir(__dirname);
 
 // create PDF
 man2pdf('man'); // creates man(1).pdf
