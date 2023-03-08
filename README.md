@@ -2,9 +2,27 @@
 
 Convert manpages to PDF.
 
+## NPM package
+
+### Install
+
+```bash
+npm install man2pdf
+```
+
+### Usage
+
+See the [`examples/js_ts`](./examples/js_ts/) directory for usage.
+
+There are three files:
+
+* JavaScript version (CommonJS): [`man.js`](./examples/js_ts/man.js)
+* JavaScript version (ESModule): [`man.mjs`](./examples/js_ts/man.mjs)
+* TypeScript version: [`man.ts`](./examples/js_ts/man.ts)
+
 ## Bash script
 
-The bash script is the **[`src/bash/man2pdf.sh`](./src/bash/man2pdf.sh)** file.
+The bash script is the **[`src/bash/man2pdf.sh`](./src/bash/man2pdf.sh)** file, for which the NPM script depends on.
 
 ### Install to `PATH`
 
