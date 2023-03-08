@@ -45,46 +45,25 @@ function FindManpage {
     local manpage="$1"
 
     # Check if the manpage is valid
-    if ! man -w "$manpage" > /dev/null
+    # and if valid, get the filename
+    local manpageFile=""
+    manpageFile="$(man -w "$manpage")"
+    if [ $? -ne 0 ]
     then
         echo "[ERROR] Invalid manpage \"$manpage\"" >&2
         return 1
     fi
 
-    # Convert to "name(section)" format
-    local normalizedNameSection=""
-    # Case 1: <manpage_name>.<section>
-    # Notes:
-    #   1. the . sign may be present in <manpage_name>
-    #   2. paranetheses may not be present in the entire argument
-    if [[ "$manpage" =~ ^([^()]+)\.([^.()]+)$ ]]
+    # Convert to manpage_name(section) format
+    local manpageFileBasename="$(basename "$manpageFile" .gz)" # may be gzipped
+    if ! [[ "$manpageFileBasename" =~ ^(.+)\.(.+)$ ]]
     then
-        normalizedNameSection="${BASH_REMATCH[1]}(${BASH_REMATCH[2]})"
-    # Case 2: <manpage_name>(<section>)
-    # Notes:
-    #   1. Parentheses may only be present around the <section> component, exactly once
-    elif [[ "$manpage" =~ ^([^()]+)\(([^()]+)\)$ ]]
-    then
-        normalizedNameSection="${BASH_REMATCH[1]}(${BASH_REMATCH[2]})"
+        echo "[ERROR] Invalid manpage file \"$manpageFile\"." >&2
+        echo "The name should have the <manpage_name>.<section>[.gz] format, with an optional .gz suffix (for compressed manpages)." >&2
     fi
-
-    if [ -n "$normalizedNameSection" ]
-    then
-        echo "$normalizedNameSection"
-        return 0
-    fi
-
-    # Resolve manpage section if not given
-    local firstMatchingManpage=$(man -f "$manpage" | head -n 1 | sed -E 's/^([^() \t\n\r\f\v]+)\s*\(([^()]+)\).*$/\1(\2)/g')
-    if [ -n "$firstMatchingManpage" ]
-    then
-        normalizedNameSection="$firstMatchingManpage"
-        echo "$normalizedNameSection"
-        return 0
-    fi
-
-    echo "[ERROR] Unable to resolve manpage \"$manpage\"" >&2
-    return 1
+    local manpageName="${BASH_REMATCH[1]}"
+    local section="${BASH_REMATCH[2]}"
+    echo "$manpageName($section)"
 }
 
 FindManpage "$manpage"

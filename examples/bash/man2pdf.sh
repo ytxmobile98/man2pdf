@@ -4,7 +4,8 @@ CURDIR="$(dirname "$(realpath "$0")")"
 
 cd "$CURDIR"
 
-PATH=".:$PATH"
+# Before running this script, please run `sudo make install` in the repo's
+# root directory, to install the `../../src/bash/man2pdf.sh` to system PATH
 
 # create PDF
 man2pdf "man" # creates man(1).pdf
