@@ -16,7 +16,7 @@
     "example:cjs": "cd examples/js_ts && node man.js",
     "example:esm": "cd examples/js_ts && node man.mjs",
     "example:ts": "cd examples/js_ts && ts-node man.ts",
-    "prepack": "npm run build",
+    "prepack": "npm run build && npm run test",
     "test": "cd test && ts-mocha **/*.test.ts"
   },
   "files": [
