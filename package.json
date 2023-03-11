@@ -1,8 +1,9 @@
 {
   "name": "man2pdf",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Convert manpages to PDF",
   "os": [
+    "darwin",
     "linux"
   ],
   "main": "dist/js/index.js",
@@ -12,11 +13,11 @@
     "build:js": "mkdir -p dist/js && tsc -p src/ts",
     "clean": "rm -rf dist",
     "examples": "( npm run example:bash ); ( npm run example:cjs ); ( npm run example:esm ); ( npm run example:ts )",
-    "example:bash": "cd examples/bash && ./man2pdf.sh",
+    "example:bash": "cd examples/bash && ./man2pdf.sh && ./man2pdf_with_section.sh",
     "example:cjs": "cd examples/js_ts && node man.js",
     "example:esm": "cd examples/js_ts && node man.mjs",
     "example:ts": "cd examples/js_ts && ts-node man.ts",
-    "prepack": "npm run build && npm run test",
+    "pretest": "npm run build",
     "test": "cd test && ts-mocha **/*.test.ts"
   },
   "files": [

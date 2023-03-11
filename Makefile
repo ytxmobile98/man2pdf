@@ -8,9 +8,14 @@ INSTALL_DIR := /usr/local/bin
 SHARE_DIR := /usr/local/share/$(MAN2PDF)
 else
 USER := $(shell whoami)
-INSTALL_DIR := /home/$(USER)/bin
-SHARE_DIR := /home/$(USER)/.local/share/$(MAN2PDF)
-$(info To install $(MAN2PDF) for current user, please ensure that the directory "$(INSTALL_DIR)" exists and is in $$PATH.)
+OS := $(shell uname -s)
+ifeq ($(OS),Darwin)
+HOME := /Users/$(USER)
+else
+HOME := /home/$(USER)
+endif
+INSTALL_DIR := $(HOME)/bin
+SHARE_DIR := $(HOME)/.local/share/$(MAN2PDF)
 endif
 
 .PHONY: all
@@ -19,12 +24,14 @@ all: help
 .PHONY: help
 help:
 	@echo "[MAN2PDF]"
-	@echo ""
 	@echo "- \`make install\` / \`make uninstall\`: Install / uninstall for current user only."
 	@echo "- \`sudo make install\` / \`sudo make uninstall\`: Install / uninstall for all users."
 
 .PHONY: install
 install: $(INSTALL_DIR) $(SHARE_DIR)
+ifneq ($(USER),root)
+	$(info [NOTE] To install "$(MAN2PDF)" for current user, please ensure that the directory "$(INSTALL_DIR)" exists and is in $$PATH.)
+endif
 	@cp -rv "$(BASH_DIR)"/* "$(SHARE_DIR)"
 	@ln -rsfv "$(SHARE_DIR)/$(MAN2PDF_EXEC)" "$(INSTALL_DIR)/$(MAN2PDF)"
 

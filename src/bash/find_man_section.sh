@@ -16,38 +16,40 @@ function CheckHelpFlag {
 function ShowHelpAndExit {
     local exitCode=$(expr "$1" \| 0)
 
-    echo "Usage: bash \"$EXEC\" <manpage>" >&2
-    echo "" >&2
-    echo "<manpage> takes one of the following formats:" >&2
-    echo "1. \`<section> <manpage_name>\`" >&2
-    echo "2. \`<manpage_name>.<section>\`" >&2
-    echo "3. \`<manpage_name>(<section>)\`" >&2
-    echo "4. \`<manpage_name>\` (The section is resolved automatically)" >&2
-    echo "" >&2
-    echo "The output will have this format: \`<manpage_name>(<section>)\`" >&2
+    echo "Usage: bash \"$EXEC\" [section] <manpage_name>" >&2
+    echo "The output will have this format: \`<section> <manpage_name>\`" >&2
 
     exit $exitCode
 }
 
-# Check arguments
-CheckHelpFlag $@
-if [ -n "$1" ] && [ -n "$2" ]
-then
-    manpage="$2($1)" # name(section), e.g. ls(1)
-elif [ -n "$1" ]
-then
-    manpage="$1"
-else
-    ShowHelpAndExit 1
-fi
-
+# Usage: FindManPage [section] <manpage_name>
 function FindManpage {
-    local manpage="$1"
+    local manpage=""
+
+    local section=""
+    local manpageName=""
+
+    if [ -n "$1" ] && [ -n "$2" ]
+    then
+        section="$1"
+        manpageName="$2"
+
+        manpage="$section $manpageName"
+    elif [ -n "$1" ]
+    then
+        section=""
+        manpageName="$1"
+
+        manpage="$manpageName"
+    else
+        echo "Usage: $0 [section] <manpage_name>" >&2
+        return 1
+    fi
 
     # Check if the manpage is valid
     # and if valid, get the filename
     local manpageFile=""
-    manpageFile="$(man -w "$manpage")"
+    manpageFile="$(man -w $manpage)"
     if [ $? -ne 0 ]
     then
         echo "[ERROR] Invalid manpage \"$manpage\"" >&2
@@ -62,9 +64,24 @@ function FindManpage {
         echo "The name should have the <manpage_name>.<section>[.gz] format, with an optional .gz suffix (for compressed manpages)." >&2
         return 1
     fi
-    local manpageName="${BASH_REMATCH[1]}"
-    local section="${BASH_REMATCH[2]}"
-    echo "$manpageName($section)"
+    manpageName="${BASH_REMATCH[1]}"
+    section="${BASH_REMATCH[2]}"
+    echo "$section $manpageName"
 }
 
-FindManpage "$manpage"
+# Check arguments
+CheckHelpFlag $@
+if [ -n "$1" ] && [ -n "$2" ]
+then
+    section="$1"
+    manpageName="$2"
+
+    FindManpage "$section" "$manpageName"
+elif [ -n "$1" ]
+then
+    manpageName="$1"
+
+    FindManpage "$manpageName"
+else
+    ShowHelpAndExit 1
+fi

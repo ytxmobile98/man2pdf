@@ -17,7 +17,7 @@ function createReadOnlyFile(filePath: string) {
 describe('man2pdf tests', () => {
     it('nonexistent manpage', () => {
         const spawnResult = man2pdf('.');
-        assert.ok(spawnResult.status !== 0, spawnResult.error?.message);
+        assert.notStrictEqual(spawnResult.status, 0, spawnResult.error?.message);
     });
 
     describe('generate .pdf files in current working directory', () => {
@@ -27,7 +27,7 @@ describe('man2pdf tests', () => {
             const expectedFilePath = join(CWD, expectedFilename);
 
             const spawnResult = man2pdf(manpage);
-            assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+            assert.strictEqual(spawnResult.status, 0, spawnResult.error?.message);
 
             assert.ok(existsSync(expectedFilePath));
             rmSync(expectedFilePath);
@@ -37,12 +37,8 @@ describe('man2pdf tests', () => {
             runTest('man', 'man(1).pdf');
         });
 
-        it('manpage_name.section', () => {
-            runTest('man.1', 'man(1).pdf');
-        });
-
-        it('manpage_name(section)', () => {
-            runTest('man(1)', 'man(1).pdf');
+        it('manpage_name, with section', () => {
+            runTest('1 man', 'man(1).pdf');
         });
     });
 
@@ -53,7 +49,7 @@ describe('man2pdf tests', () => {
             const expectedFilePath = join(tempDir, expectedFilename);
 
             const spawnResult = man2pdf(manpage, tempDir);
-            assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+            assert.strictEqual(spawnResult.status, 0, spawnResult.error?.message);
 
             assert.ok(existsSync(expectedFilePath));
             rmSync(expectedFilePath);
@@ -71,12 +67,8 @@ describe('man2pdf tests', () => {
             runTest('man', 'man(1).pdf');
         });
 
-        it('manpage_name.section', () => {
-            runTest('man.1', 'man(1).pdf');
-        });
-
-        it('manpage_name(section)', () => {
-            runTest('man(1)', 'man(1).pdf');
+        it('manpage_name, with section', () => {
+            runTest('1 man', 'man(1).pdf');
         });
     });
 
@@ -87,7 +79,7 @@ describe('man2pdf tests', () => {
 
         function runTest(manpage: string) {
             const spawnResult = man2pdf(manpage, expectedFilePath);
-            assert.ok(spawnResult.status === 0, spawnResult.error?.message);
+            assert.strictEqual(spawnResult.status, 0, spawnResult.error?.message);
 
             assert.ok(existsSync(expectedFilePath));
         }
@@ -107,12 +99,8 @@ describe('man2pdf tests', () => {
             runTest('man');
         });
 
-        it('manpage_name.section', () => {
-            runTest('man.1');
-        });
-
-        it('manpage_name(section)', () => {
-            runTest('man(1)');
+        it('manpage_name, with section', () => {
+            runTest('1 man');
         });
     });
 
@@ -126,7 +114,7 @@ describe('man2pdf tests', () => {
             const statBefore = statSync(expectedFilePath);
 
             const spawnResult = man2pdf(manpage, expectedFilePath);
-            assert.ok(spawnResult.status !== 0, spawnResult.error?.message);
+            assert.notStrictEqual(spawnResult.status, 0, spawnResult.error?.message);
 
             assert.ok(existsSync(expectedFilePath));
             const statAfter = statSync(expectedFilePath);
@@ -150,12 +138,8 @@ describe('man2pdf tests', () => {
             runTest('man');
         });
 
-        it('manpage_name.section', () => {
-            runTest('man.1');
-        });
-
-        it('manpage_name(section)', () => {
-            runTest('man(1)');
+        it('manpage_name, with section', () => {
+            runTest('1 man');
         });
     });
 });
